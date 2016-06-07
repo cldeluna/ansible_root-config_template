@@ -11,4 +11,4 @@ nag1
 nag2
  
 [asr:vars]
-ntp_server=172.30.0.11
+ntp_server=6.6.6.6
