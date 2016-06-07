@@ -1,0 +1,14 @@
+---
+
+ansible_ssh_host: 10.1.10.28
+ansible_ssh_pass: cisco
+
+hostname: nr4
+
+loop0: "fdc4:8d01:dda5:d100:0:0:0:12/128"
+
+
+neighbors:
+  - { nei: "fdc4:8d01:dda5:d214:a", int: GigabitEthernet2, asn: 563 }
+  - { nei: "fdc4:8d01:dda5:d224:a", int: GigabitEthernet3, asn: 563 }  
+

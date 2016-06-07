@@ -1,0 +1,26 @@
+# {{ hostname }}
+
+interface Loopback0
+ ipv6 address {{ loop0 }}
+
+
+router bgp {{ bgp_asn }}
+
+!
+
+
+ {%- for neighbor in neighbors %}
+
+  neighbor {{ neighbor.nei }} remote-as {{ neighbor.asn }}
+  neighbor {{ neighbor.nei }} update-source {{ neighbor.int }}
+ {% endfor -%}
+
+
+ address-family ipv6 unicast 
+ {% for neighbor in neighbors %} 
+  neighbor {{ neighbor.nei }} remote-as {{ neighbor.asn }}
+  neighbor {{ neighbor.nei }} activate
+  neighbor {{ neighbor.nei }} next-hop-self
+  neighbor {{ neighbor.nei }} soft-reconfiguration inbound
+ {%- endfor %}  
+ exit-address-family

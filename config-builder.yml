@@ -1,0 +1,39 @@
+---
+
+- name: Setting NAG Global Vaiables 
+  hosts: nag
+  connection: local
+  vars:
+    ntp_pool:
+      - ntp1.domain
+      - ntp2.domain
+
+    bgp_asn: 65490
+
+
+    new_net:
+      - 172.18.32.224/27
+      - 172.18.32.96/27
+      - 172.18.32.192/27
+
+
+- name: Creating Template based configurations for Nexus Primary 
+  hosts: nag1
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: Building New SVI Config for Primary NAG
+    template: src=templates/new_svi_primary.j2 dest={{ configdir }}/{{ inventory_hostname }}-pri.cfg
+
+- name: Creating Template based configurations for Nexus Secondary
+  hosts: nag2
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: Building New SVI Config for Secondary NAG
+    template: src=templates/new_svi_secondary.j2 dest={{ configdir }}/{{ inventory_hostname }}-sec.cfg
+

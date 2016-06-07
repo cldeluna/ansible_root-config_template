@@ -1,0 +1,71 @@
+---
+
+- name: Setting Global Vaiables 
+  hosts: asr
+  connection: local
+  vars:
+    ntp_server: 172.30.0.11
+    bgp_asn: 65490
+    configdir: ./configs
+    new_net:
+      - 172.18.32.224/27
+      - 172.18.32.96/27
+      - 172.18.32.192/27
+
+
+- name: Creating Template based configurations for Nexus Primary 
+  hosts: asr
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: Building New NTP Config 
+    template: src=templates/ntp.j2 dest=./configs/{{ inventory_hostname }}-ntp.cfg
+
+- name:  Running show commands
+  hosts: asr
+  connection: local
+  gather_facts: no
+
+  tasks:
+
+  - name: GET Credentials
+    include_vars: ./group_vars/creds.yml
+
+
+  - name: DEFINE Provider
+    set_fact:
+      provider:
+        host: "{{ inventory_hostname }}"
+        username: "{{ creds.username }}"
+        password: "{{ creds.password }}"
+        auth_pass: " {{ creds.auth_pass }}"
+
+  - debug: var=provider
+
+  - name: RUN show ip int brief
+    ios_command:
+      provider: "{{ provider }}"
+      commands:
+        - show ip int br
+    register:  intbr
+
+  - debug: var=intbr.stdout_lines
+
+  - name: NTP Configuration
+    ios_template:
+      provider: "{{ provider }}"
+      authorize: true
+      backup: true 
+#      host: "{{ inventory_hostname }}"
+#      username: admin
+#      password: cisco
+#      auth_pass: cisco
+#      authorize: true
+#      src: ",/configs/{{ inventory_hostname }}-ntp.cfg"
+      src: ./configs/ntp.cfg
+    register: template
+
+  - debug: var=template
+

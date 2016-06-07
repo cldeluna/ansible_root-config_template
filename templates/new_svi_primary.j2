@@ -1,0 +1,48 @@
+!# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!# {{ inventory_hostname }}
+!# !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!#  Ansible Information: {{ ansible_version }}
+#jinja2:trim_blocks: False 
+
+config t
+
+
+{% for item in new_svi %}
+vlan {{ item.vlannum }}
+  name {{ item.vlandesc }}
+
+!
+!
+interface Vlan{{ item.vlannum }}
+  description {{ item.vlandesc }}
+  no shutdown
+  no ip redirects
+  ip address {{ item.ipmask }}
+  ip unreachables
+  no ipv6 redirects
+  hsrp version 2
+  hsrp {{ item.vlannum }} 
+    preempt 
+    priority 110
+    ip {{ item.vip }}
+  ip dhcp relay address {{ item.dhcprelay1 }} 
+  ip dhcp relay address {{ item.dhcprelay2 }}
+
+{% endfor %}
+
+
+
+router bgp {{ bgp_asn }}
+
+!
+ address-family ipv4 unicast
+
+
+{%- for net in new_net %}
+
+  network {{ net }} 
+{% endfor -%}
+!
+end
+
+

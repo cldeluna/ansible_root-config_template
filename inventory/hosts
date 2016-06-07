@@ -1,0 +1,11 @@
+[local]
+localhost ansible_ssh_user=claudia
+
+[routers]
+nrt1
+nrt2
+nrt3
+nrt4
+nrt5
+
+

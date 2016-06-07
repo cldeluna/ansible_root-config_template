@@ -1,0 +1,10 @@
+---
+
+
+
+
+new_svi:
+  - { hostname: eva1-nag1, vlannum: 301, vlandesc: esv1-uc-vn-301, ipmask: 172.18.32.226/27, vip: 172.18.32.225, dhcprelay1: 172.18.10.11, dhcprelay2: 172.18.10.12 }
+  - { hostname: eva1-nag1, vlannum: 310, vlandesc: esv1-uc-vn-310, ipmask: 172.18.32.98/27, vip: 172.18.32.97, dhcprelay1: 172.18.10.11, dhcprelay2: 172.18.10.12 }
+  - { hostname: eva1-nag1, vlannum: 320, vlandesc: esv1-uc-vn-320, ipmask: 172.18.32.194/27, vip: 172.18.32.193, dhcprelay1: 172.18.10.11, dhcprelay2: 172.18.10.12 }
+
