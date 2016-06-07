@@ -4,7 +4,7 @@
   hosts: asr
   connection: local
   vars:
-    ntp_server: 172.30.0.11
+    ntp_server: 6.6.6.6
     bgp_asn: 65490
     configdir: ./configs
     new_net:
